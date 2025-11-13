@@ -1,5 +1,10 @@
 # Cordova10 混合 App 构建环境
 
+## 📚 答疑建议
+
+- 📦 Github 项目仓库 [docker-cordovabuilder](https://github.com/gonggbb/docker-cordovabuilder.git)
+- `LOG.md` 构建流程日志
+
 ## 🛠 环境配置
 
 | 组件                | 版本          | 备注                       |
