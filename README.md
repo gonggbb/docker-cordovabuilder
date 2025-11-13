@@ -4,6 +4,7 @@
 
 - 📦 Github 项目仓库 [docker-cordovabuilder](https://github.com/gonggbb/docker-cordovabuilder.git)
 - `LOG.md` 构建流程日志
+- env_zip 压缩包自己下载
 
 ## 🛠 环境配置
 
