@@ -1,11 +1,5 @@
 # Cordova10 混合 App 构建环境
 
-## 📚 答疑建议
-
-- 📦 Github 项目仓库 [docker-cordovabuilder](https://github.com/gonggbb/docker-cordovabuilder.git)
-- `LOG.md` 构建流程日志
-- env_zip 压缩包自己下载
-
 ## 🛠 环境配置
 
 | 组件                | 版本          | 备注                       |
@@ -19,7 +13,7 @@
 
 ## ▶️ Windows 启动脚本
 
-手动创建，powershell启动【不是cmd】 [run-cordovabuilder.ps1](/worksapce/run-cordovabuilder.ps1)
+手动创建，powershell启动【不是cmd】 `run-cordovabuilder.ps1`
 
 ```powershell
 
@@ -33,13 +27,16 @@ docker run -it `
   -v ${GradleCachePath}:/root/.gradle `
   -u 0 `
   -e KEYSTORE_PATH=/workspace/xx.keystore `
-  -e KEY_ALIAS=xx`
+  -e KEY_ALIAS=xx `
   -e KEYSTORE_PASSWORD=自己的密码 `
   -e KEY_PASSWORD=自己的密码 `
-  gamesg/cordovabuilder:v1.0.0-rc.4.1 bash -c "
-    ln -s /opt/app-env/build-scripts /workspace/build-scripts-short &&
-    exec /bin/bash
+  gamesg/cordovabuilder:v1.0.0-rc.5 bash -c "
+    ln -sfn /opt/app-env/build-scripts /workspace/build-scripts-short && 
+    nohup sh build-scripts-short/apk-automatic-v2.sh > nohup.log 2>&1 &
+    exec /bin/bash"
 ```
+
+
 
 ## ⚠️ 注意事项
 
@@ -65,13 +62,34 @@ Using cordova-fetch for cordova-android@^9.1.0
 
 ## 📦 版本说明
 
+
+### 🔄 <span style="color: #4CAF50">v1.0.0-rc.5</span>
+
+- 添加 `nohup` 启动脚本和日志输出 `nohup.log `
+
+- nohup sh build-scripts-short/apk-automatic-v2.sh > nohup.log 2>&1 &
+
+```powershell
+Name
+----
+apk-automatic-v2.sh            # 自动化构建 apksigner v2 签名
+apk-automatic.sh               # 自动化构建 jarsigner 签名
+apk-build-sign-v2.sh           # 打包 apksigner v2 签名
+apk-build-sign.sh              # 打包 jarsigner 签名  
+apk-build.sh                   # 构建
+apk-init.sh                    # 初始化环境
+apk-replace-repositories.sh    # 替换jcenter依赖
+apk-sign-v2.sh                 # apksigner v2 签名
+apk-sign.sh                    # jarsigner 签名
+```
+
 ### 🔄 <span style="color: #4CAF50">v1.0.0-rc.4.1</span>
 
 - 包含 v1.0.0-rc.4 feat:1 ; v1.0.0-rc.4 feat:2
 
 - feat:1 gradle-6.5-all.zip\*下载失败手动替换 `/root/.gradle/wrapper/dists/gradle-6.5-all/2oz4ud9k3tuxjg84bbf55q0tn/gradle-6.5-all.zip`
 
-> 2oz4ud9k3tuxjg84bbf55q0tn 随机的
+- 2oz4ud9k3tuxjg84bbf55q0tn 随机的
 
 ```bash
 root@73578b1a6311:/# ll /root/.gradle/wrapper/dists/gradle-6.5-all/2oz4ud9k3tuxjg84bbf55q0tn/
@@ -87,13 +105,15 @@ drwxr-xr-x 1 root root      4096 Nov 13 06:35 gradle-6.5/
 
 ### 🔄 v1.0.0-rc.4
 
-- feat:1 `v1.0.0-rc.1 fix:1.1` apk-replace-repositories.sh 替换`jcenter`依赖
+- /opt/app-env 新增环境和配置文件
 
 ```bash
 drwxr-xr-x 1 root root      4096 Nov 13 06:56 build-scripts/
 -rwxr-xr-x 1 root root 145767155 Nov 12 01:33 gradle-6.5-all.zip*
 drwxr-xr-x 2 root root      4096 Nov 12 10:06 platforms-files/
 ```
+
+- feat:1 `v1.0.0-rc.1 fix:1.1` apk-replace-repositories.sh 替换`jcenter`依赖
 
 - feat:2 添加 `gradle-caches.tar.gz` 缓存文件，优化构建速度
 
@@ -115,12 +135,12 @@ drwxr-xr-x 1 root root      4096 Nov 13 06:35 gradle-caches/
 - feat:3：添加 `build-scripts` 软链接，打包脚本会自动创建软链接
 
 ```bash
-  rwxr-xr-x 1 root root 2608 Nov 13 05:49 apk-init.sh*                  # 初始化环境
-  rwxr-xr-x 1 root root  838 Nov 13 05:44 apk-replace-repositories.sh*  # 替换jcenter依赖
-  rwxr-xr-x 1 root root 1810 Nov 13 05:49 apk-build-sign.sh*            # 打包签名
-  rwxr-xr-x 1 root root  441 Nov 13 05:50 apk-build.sh*                 # 打包
-  rwxr-xr-x 1 root root 1437 Nov 13 05:50 apk-sign.sh*                  # 签名
-  rwxrwxrwx 1 root root   26 Nov 13 06:56 build-scripts -> /opt/app-env/build-scripts/
+  apk-init.sh*                  # 初始化环境
+  apk-replace-repositories.sh*  # 替换jcenter依赖
+  apk-build-sign.sh*            # 打包签名
+  apk-build.sh*                 # 打包
+  apk-sign.sh*                  # 签名
+  build-scripts -> /opt/app-env/build-scripts/
 ```
 
 ### 🔄 <span style="color: #4CAF50">v1.0.0-rc.3</span>
@@ -163,20 +183,6 @@ buildscript {
 ```
 
 - `platforms\android\CordovaLib\repositories.gradle`
-
-```bash
-
-ext.repos = {
-     maven { url 'https://maven.aliyun.com/repository/central' }
-      maven { url 'https://maven.aliyun.com/repository/jcenter' }
-      maven { url 'https://maven.aliyun.com/repository/public' }
-      maven { url 'https://maven.aliyun.com/repository/google' }
-      google()
-      mavenCentral()
-}
-
-```
-
 - `platforms\android\repositories.gradle`
 
 ```bash

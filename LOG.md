@@ -157,3 +157,6 @@ The signer's certificate is self-signed.
 🎉 APK 签名流程完成
 
 ```
+
+
+# nohup.log
