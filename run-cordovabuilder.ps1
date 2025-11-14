@@ -11,6 +11,7 @@ docker run -it `
   -e KEY_ALIAS=xx`
   -e KEYSTORE_PASSWORD=自己的密码 `
   -e KEY_PASSWORD=自己的密码 `
-  gamesg/cordovabuilder:v1.0.0-rc.4.1 bash -c "
-    ln -s /opt/app-env/build-scripts /workspace/build-scripts-short &&
-    exec /bin/bash
+  gamesg/cordovabuilder:v1.0.0-rc.5 bash -c "
+    ln -sfn /opt/app-env/build-scripts /workspace/build-scripts-short && 
+    nohup sh build-scripts-short/apk-automatic-v2.sh > nohup.log 2>&1 &
+    exec /bin/bash"

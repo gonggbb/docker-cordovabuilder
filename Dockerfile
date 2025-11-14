@@ -8,8 +8,9 @@ ENV DEBIAN_FRONTEND=noninteractive \
     ANDROID_HOME=/opt/android-sdk \
     ANDROID_SDK_ROOT=/opt/android-sdk \
     GRADLE_HOME=/opt/gradle/gradle \
+    ANDROID_BUILD_TOOLS=/opt/android-sdk/build-tools/30.0.3 \
     # GRADLE_USER_HOME=/opt/gradle/gradle \
-    PATH=$PATH:/opt/gradle/gradle/bin:/opt/android-sdk/tools/bin:/opt/android-sdk/platform-tools:/opt/java/java/bin
+    PATH=$PATH:/opt/gradle/gradle/bin:/opt/android-sdk/tools/bin:/opt/android-sdk/platform-tools:/opt/java/java/bin:/opt/android-sdk/build-tools/30.0.3
 # 替换现有的错误安装命令
 RUN apt-get update && \
     apt-get install -y \

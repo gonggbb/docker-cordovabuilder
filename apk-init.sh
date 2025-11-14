@@ -63,14 +63,19 @@ echo "当前目录: $(pwd)"
 # 如果存在 package.json，则执行 npm install
 if [ -f package.json ]; then
   echo "📦 安装 npm 依赖..."
-  npm install
+  npm install --no-audit --no-fund
 fi
 
 # 检查 Cordova 环境
 cordova -v || { echo "❌ Cordova CLI 未安装"; exit 1; }
+
+# 在检查 Cordova 环境之前添加
+export CORDOVA_TELEMETRY_OPT_OUT=true
 
 # 清理并添加 Android 平台
 echo "------------------------------------------------------"
 echo "⚙️  准备 Cordova Android 平台..."
 # cordova platform add android@10.0.0 --no-telemetry 下载gradle 7.x 版本 android@10.0.0 及以上版本；cordova-android@^9.1.0 需要 gradle 6.x 版本
 cordova platform add android --no-telemetry
+
+sh /workspace/build-scripts-short/apk-replace-repositories.sh
